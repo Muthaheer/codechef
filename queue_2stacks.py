@@ -1,4 +1,5 @@
 # Program that implements queue using 2 stacks
+# Problem statement: https://www.hackerrank.com/contests/pride-ab-filtering-test-3rd-years/challenges/queue-using-two-stacks
 stack1 = [];
 stack2 = [];
 
@@ -6,26 +7,24 @@ def enqueue(item):
 	stack1.append(item);
 
 def dequeue():
-	# pop all elements of stack1 and push it to stack2
-	while(len(stack1)):
-		stack2.append(stack1.pop());
-
-	# pop the first element from stack2, which would be the oldest element of the (imaginary) queue
-	ele = stack2.pop();
-
-	# pop all elements from stack2 and push back to stack1
-	while(len(stack2)):
-		stack1.append(stack2.pop());
-
-	return ele;
+	# if stack2 is empty, move all elements from stack1 to stack2
+	if not len(stack2):
+		while len(stack1):
+			stack2.append(stack1.pop());
+	# the topmost element of the stack2 will always contain the first element of the queue
+	return stack2.pop();
 
 def display():
-	for i in stack1:
-		print(str(i));
+	# if stack2 is empty, then the bottom element of stack1 will be the first element in the queue
+	if len(stack2):
+		print(stack2[len(stack2)-1]);
+	else:
+		print(stack1[0]);
 
 t = int(input()); # no. of test cases
 
-for i in range(0, t):
+i = 0;
+while i < t:
 	query = list(map(int,input().split(' ')));
 	if query[0] == 1:
 		enqueue(query[1]);
@@ -33,3 +32,4 @@ for i in range(0, t):
 		dequeue();
 	else:
 		display();
+	i += 1;
